@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Personal Finance Dashboard</h1>
+        </header>
+        <main>
+            <section id="dashboard">
+                <h2>Dashboard</h2>
+                <div id="charts">
+                    <canvas id="monthlyIncomeExpenseChart"></canvas>
+                    <canvas id="expenseByCategoryChart"></canvas>
+                </div>
+            </section>
+            <section id="transactions">
+                <h2>Transactions</h2>
+                <form id="transaction-form">
+                    <select id="type" required>
+                        <option value="">Type</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                    <input type="date" id="date" required>
+                    <input type="text" id="payee" placeholder="Payee Name" required>
+                    <input type="text" id="category" placeholder="Category" required>
+                    <input type="text" id="subcategory" placeholder="Sub Category" required>
+                    <input type="number" id="amount" step="0.01" placeholder="Amount" required>
+                    <input type="text" id="account" placeholder="Account" required>
+                    <input type="text" id="description" placeholder="Description">
+                    <button type="submit">Add Transaction</button>
+                </form>
+                <input type="file" id="csvFileInput" accept=".csv">
+                <button id="uploadCsvButton">Upload CSV</button>
+                <table id="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Date</th>
+                            <th>Payee Name</th>
+                            <th>Category</th>
+                            <th>Sub Category</th>
+                            <th>Amount</th>
+                            <th>Account</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
