@@ -1,14 +1,92 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const navButtons = document.querySelectorAll('.nav-button');
+    const tabContents = document.querySelectorAll('.tab');
     const transactionForm = document.getElementById('transaction-form');
     const transactionsTable = document.getElementById('transactions-table').getElementsByTagName('tbody')[0];
     const csvFileInput = document.getElementById('csvFileInput');
     const uploadCsvButton = document.getElementById('uploadCsvButton');
+    const newTransactionButton = document.getElementById('newTransactionButton');
+    const accountFilter = document.getElementById('accountFilter');
+    const payeeSelect = document.getElementById('payee');
+    const categorySelect = document.getElementById('category');
+    const subcategorySelect = document.getElementById('subcategory');
+    const accountSelect = document.getElementById('account');
+    const modal = document.getElementById('modal');
+    const newEntryInput = document.getElementById('newEntry');
+    const addNewEntryButton = document.getElementById('addNewEntryButton');
+    const closeModalButton = document.getElementById('closeModalButton');
 
+    let currentSelect = null;
     let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-    let monthlyIncomeExpenseChart, expenseByCategoryChart;
+    let monthlyIncomeExpenseChart, expenseByCategoryChart, netMarginChart;
+
+    function updateSelectOptions(select, options) {
+        select.innerHTML = '';
+        options.forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option;
+            opt.textContent = option;
+            select.appendChild(opt);
+        });
+        const addOption = document.createElement('option');
+        addOption.value = 'new';
+        addOption.textContent = 'Add New';
+        select.appendChild(addOption);
+    }
+
+    function handleSelectChange(event) {
+        if (event.target.value === 'new') {
+            currentSelect = event.target;
+            modal.style.display = 'flex';
+        }
+    }
+
+    addNewEntryButton.addEventListener('click', () => {
+        const newValue = newEntryInput.value.trim();
+        if (newValue && currentSelect) {
+            const newOption = document.createElement('option');
+            newOption.value = newValue;
+            newOption.textContent = newValue;
+            currentSelect.insertBefore(newOption, currentSelect.querySelector('option[value="new"]'));
+            currentSelect.value = newValue;
+            newEntryInput.value = '';
+            modal.style.display = 'none';
+        }
+    });
+
+    closeModalButton.addEventListener('click', () => {
+        newEntryInput.value = '';
+        modal.style.display = 'none';
+    });
+
+    // Handle tab switching
+    navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            const tabId = button.getAttribute('data-tab');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === tabId) {
+                    content.classList.add('active');
+                }
+            });
+        });
+    });
+
+    // Show the form when the New Transaction button is clicked
+    newTransactionButton.addEventListener('click', () => {
+        transactionForm.style.display = 'block';
+    });
 
     // Populate the table with existing transactions
     transactions.forEach(addTransactionToTable);
+    updateAccountFilter();
+    updateSelectOptions(payeeSelect, getUniqueValues('payee'));
+    updateSelectOptions(categorySelect, getUniqueValues('category'));
+    updateSelectOptions(subcategorySelect, getUniqueValues('subcategory'));
+    updateSelectOptions(accountSelect, getUniqueValues('account'));
     updateCharts();
 
     transactionForm.addEventListener('submit', function(event) {
@@ -34,10 +112,26 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('transactions', JSON.stringify(transactions));
 
         addTransactionToTable(transaction);
+        updateAccountFilter();
+        updateSelectOptions(payeeSelect, getUniqueValues('payee'));
+        updateSelectOptions(categorySelect, getUniqueValues('category'));
+        updateSelectOptions(subcategorySelect, getUniqueValues('subcategory'));
+        updateSelectOptions(accountSelect, getUniqueValues('account'));
         updateCharts();
 
-        // Reset the form fields
+        // Reset the form fields and hide the form
         transactionForm.reset();
+        transactionForm.style.display = 'none';
+
+        // Keep focus on the Transactions tab
+        navButtons.forEach(btn => btn.classList.remove('active'));
+        document.querySelector('.nav-button[data-tab="transactions"]').classList.add('active');
+        tabContents.forEach(content => content.classList.remove('active'));
+        document.getElementById('transactions').classList.add('active');
+    });
+
+    accountFilter.addEventListener('change', function() {
+        filterTransactionsByAccount();
     });
 
     uploadCsvButton.addEventListener('click', () => {
@@ -77,6 +171,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         console.log('Transactions after CSV import:', transactions); // Debugging log
         localStorage.setItem('transactions', JSON.stringify(transactions));
+        updateAccountFilter();
+        updateSelectOptions(payeeSelect, getUniqueValues('payee'));
+        updateSelectOptions(categorySelect, getUniqueValues('category'));
+        updateSelectOptions(subcategorySelect, getUniqueValues('subcategory'));
+        updateSelectOptions(accountSelect, getUniqueValues('account'));
         updateCharts();
     }
 
@@ -112,7 +211,6 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Updating charts with transactions:', transactions); // Debugging log
 
         if (transactions.length === 0) {
-            // If there are no transactions, clear the charts
             if (monthlyIncomeExpenseChart) {
                 monthlyIncomeExpenseChart.destroy();
                 monthlyIncomeExpenseChart = null;
@@ -121,14 +219,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 expenseByCategoryChart.destroy();
                 expenseByCategoryChart = null;
             }
+            if (netMarginChart) {
+                netMarginChart.destroy();
+                netMarginChart = null;
+            }
             return;
         }
 
         const monthlyData = getMonthlyData(transactions);
         const expenseByCategoryData = getExpenseByCategoryData(transactions);
+        const netMarginData = getNetMarginData(monthlyData);
 
         console.log('Monthly data for chart:', monthlyData); // Debugging log
         console.log('Expense by category data for chart:', expenseByCategoryData); // Debugging log
+        console.log('Net margin data for chart:', netMarginData); // Debugging log
 
         const ctx2 = document.getElementById('monthlyIncomeExpenseChart').getContext('2d');
         if (monthlyIncomeExpenseChart) {
@@ -205,6 +309,69 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+
+        const ctx4 = document.getElementById('netMarginChart').getContext('2d');
+        if (netMarginChart) {
+            netMarginChart.destroy();
+        }
+        netMarginChart = new Chart(ctx4, {
+            type: 'bar',
+            data: {
+                labels: netMarginData.labels,
+                datasets: [
+                    {
+                        label: 'Net Margin',
+                        data: netMarginData.netMargin,
+                        backgroundColor: '#4caf50'
+                    },
+                    {
+                        label: 'Expenses',
+                        data: netMarginData.expenses,
+                        backgroundColor: '#f44336'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Month'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Percentage'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    function updateAccountFilter() {
+        const accounts = [...new Set(transactions.map(transaction => transaction.account))];
+        accountFilter.innerHTML = '<option value="all">All</option>';
+        accounts.forEach(account => {
+            const option = document.createElement('option');
+            option.value = account;
+            option.textContent = account;
+            accountFilter.appendChild(option);
+        });
+    }
+
+    function filterTransactionsByAccount() {
+        const selectedAccount = accountFilter.value;
+        const filteredTransactions = selectedAccount === 'all' ? transactions : transactions.filter(transaction => transaction.account === selectedAccount);
+        transactionsTable.innerHTML = '';
+        filteredTransactions.forEach(addTransactionToTable);
+    }
+
+    function getUniqueValues(key) {
+        return [...new Set(transactions.map(transaction => transaction[key]))];
     }
 
     function formatAmount(amount) {
@@ -236,6 +403,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const income = labels.map(month => monthlyData[month].income);
         const expenses = labels.map(month => monthlyData[month].expenses);
 
+        console.log('Formatted monthly data:', { labels, income, expenses }); // Debugging log
+
         return { labels, income, expenses };
     }
 
@@ -254,6 +423,29 @@ document.addEventListener('DOMContentLoaded', function() {
         const labels = sortedCategoryData.map(entry => entry[0]);
         const data = sortedCategoryData.map(entry => entry[1]);
 
+        console.log('Formatted expense by category data:', { labels, data }); // Debugging log
+
         return { labels, data };
     }
+
+    function getNetMarginData(monthlyData) {
+        const labels = monthlyData.labels;
+        const netMargin = monthlyData.income.map((income, index) => {
+            const expense = monthlyData.expenses[index];
+            return income === 0 ? 0 : (income - expense) / income * 100;
+        });
+        const expenses = monthlyData.income.map((income, index) => {
+            const expense = monthlyData.expenses[index];
+            return income === 0 ? 0 : expense / income * 100;
+        });
+
+        console.log('Formatted net margin data:', { labels, netMargin, expenses }); // Debugging log
+
+        return { labels, netMargin, expenses };
+    }
+
+    payeeSelect.addEventListener('change', handleSelectChange);
+    categorySelect.addEventListener('change', handleSelectChange);
+    subcategorySelect.addEventListener('change', handleSelectChange);
+    accountSelect.addEventListener('change', handleSelectChange);
 });
