@@ -175,6 +175,15 @@
         .report-total {
             font-weight: bold;
         }
+
+        .charts-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .chart-container {
+            width: 32%;
+        }
     </style>
 </head>
 <body>
@@ -207,10 +216,16 @@
                 </div>
             </div>
             <h2>Dashboard</h2>
-            <div id="charts">
-                <canvas id="monthlyIncomeExpenseChart"></canvas>
-                <canvas id="expenseByCategoryChart"></canvas>
-                <canvas id="netMarginChart"></canvas>
+            <div class="charts-row">
+                <div class="chart-container">
+                    <canvas id="monthlyIncomeExpenseChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="expenseByCategoryChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="netMarginChart"></canvas>
+                </div>
             </div>
         </section>
         <section id="transactions" class="tab">
