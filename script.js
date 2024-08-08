@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const kpiExpenses = document.getElementById('kpi-expenses');
     const kpiNetIncome = document.getElementById('kpi-net-income');
     const kpiNetMargin = document.getElementById('kpi-net-margin');
+    const reportBody = document.getElementById('report-body');
 
     let currentSelect = null;
     let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
@@ -40,6 +41,50 @@ document.addEventListener('DOMContentLoaded', function() {
         kpiExpenses.textContent = `$${expenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         kpiNetIncome.textContent = `$${netIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         kpiNetMargin.textContent = `${netMargin.toFixed(2)}%`;
+    }
+
+    function updateProfitAndLossReport() {
+        const incomeTransactions = transactions.filter(transaction => transaction.type === 'income');
+        const expenseTransactions = transactions.filter(transaction => transaction.type === 'expense');
+
+        const incomeCategories = {};
+        incomeTransactions.forEach(transaction => {
+            if (!incomeCategories[transaction.category]) {
+                incomeCategories[transaction.category] = 0;
+            }
+            incomeCategories[transaction.category] += transaction.amount;
+        });
+
+        const expenseCategories = {};
+        expenseTransactions.forEach(transaction => {
+            if (!expenseCategories[transaction.category]) {
+                expenseCategories[transaction.category] = 0;
+            }
+            expenseCategories[transaction.category] += transaction.amount;
+        });
+
+        let reportHtml = '';
+
+        reportHtml += '<tr><th colspan="3">Income</th></tr>';
+        for (const [category, amount] of Object.entries(incomeCategories)) {
+            reportHtml += `<tr><td>Income</td><td>${category}</td><td>${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td></tr>`;
+        }
+        const totalIncome = Object.values(incomeCategories).reduce((a, b) => a + b, 0);
+        reportHtml += `<tr class="report-total"><td>Total Income</td><td></td><td>${totalIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td></tr>`;
+
+        reportHtml += '<tr><th colspan="3">Expenses</th></tr>';
+        for (const [category, amount] of Object.entries(expenseCategories)) {
+            reportHtml += `<tr><td>Expense</td><td>${category}</td><td>${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td></tr>`;
+        }
+        const totalExpenses = Object.values(expenseCategories).reduce((a, b) => a + b, 0);
+        reportHtml += `<tr class="report-total"><td>Total Expenses</td><td></td><td>${totalExpenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td></tr>`;
+
+        const netIncome = totalIncome - totalExpenses;
+        const netMargin = totalIncome === 0 ? 0 : (netIncome / totalIncome) * 100;
+        reportHtml += `<tr class="report-total"><td>Net Income</td><td></td><td>${netIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td></tr>`;
+        reportHtml += `<tr class="report-total"><td>Net Margin</td><td></td><td>${netMargin.toFixed(2)}%</td></tr>`;
+
+        reportBody.innerHTML = reportHtml;
     }
 
     function updateSelectOptions(select, options) {
@@ -123,6 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateSelectOptions(accountSelect, getUniqueValues('account'));
     updateCharts();
     updateKPI();
+    updateProfitAndLossReport();
 
     transactionForm.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -154,6 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateSelectOptions(accountSelect, getUniqueValues('account'));
         updateCharts();
         updateKPI();
+        updateProfitAndLossReport();
 
         // Reset the form fields and hide the form
         transactionForm.reset();
@@ -214,6 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateSelectOptions(accountSelect, getUniqueValues('account'));
         updateCharts();
         updateKPI();
+        updateProfitAndLossReport();
     }
 
     function addTransactionToTable(transaction) {
@@ -243,6 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
         rowToDelete.remove();
         updateCharts();
         updateKPI();
+        updateProfitAndLossReport();
     }
 
     function updateCharts() {
