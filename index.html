@@ -116,6 +116,18 @@
         .modal-content button.close {
             background-color: #f44336;
         }
+
+        .dropdown-container {
+            position: relative;
+        }
+
+        .dropdown-container .search-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -153,18 +165,21 @@
                 <input type="date" id="date" required>
                 <div class="dropdown-container">
                     <label for="payee">Select Payee</label>
+                    <input type="text" class="search-input" placeholder="Search or Add New" oninput="filterOptions('payee')">
                     <select id="payee" required>
                         <option value="new">Add New</option>
                     </select>
                 </div>
                 <div class="dropdown-container">
                     <label for="category">Category</label>
+                    <input type="text" class="search-input" placeholder="Search or Add New" oninput="filterOptions('category')">
                     <select id="category" required>
                         <option value="new">Add New</option>
                     </select>
                 </div>
                 <div class="dropdown-container">
                     <label for="subcategory">Sub Category</label>
+                    <input type="text" class="search-input" placeholder="Search or Add New" oninput="filterOptions('subcategory')">
                     <select id="subcategory" required>
                         <option value="new">Add New</option>
                     </select>
@@ -172,6 +187,7 @@
                 <input type="number" id="amount" step="0.01" placeholder="Amount" required>
                 <div class="dropdown-container">
                     <label for="account">Account</label>
+                    <input type="text" class="search-input" placeholder="Search or Add New" oninput="filterOptions('account')">
                     <select id="account" required>
                         <option value="new">Add New</option>
                     </select>
