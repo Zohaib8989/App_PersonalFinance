@@ -15,10 +15,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const newEntryInput = document.getElementById('newEntry');
     const addNewEntryButton = document.getElementById('addNewEntryButton');
     const closeModalButton = document.getElementById('closeModalButton');
+    const kpiIncome = document.getElementById('kpi-income');
+    const kpiExpenses = document.getElementById('kpi-expenses');
+    const kpiNetIncome = document.getElementById('kpi-net-income');
+    const kpiNetMargin = document.getElementById('kpi-net-margin');
 
     let currentSelect = null;
     let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
     let monthlyIncomeExpenseChart, expenseByCategoryChart, netMarginChart;
+
+    function updateKPI() {
+        const income = transactions
+            .filter(transaction => transaction.type === 'income')
+            .reduce((sum, transaction) => sum + transaction.amount, 0);
+
+        const expenses = transactions
+            .filter(transaction => transaction.type === 'expense')
+            .reduce((sum, transaction) => sum + transaction.amount, 0);
+
+        const netIncome = income - expenses;
+        const netMargin = income === 0 ? 0 : (netIncome / income) * 100;
+
+        kpiIncome.textContent = `$${income.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        kpiExpenses.textContent = `$${expenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        kpiNetIncome.textContent = `$${netIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        kpiNetMargin.textContent = `${netMargin.toFixed(2)}%`;
+    }
 
     function updateSelectOptions(select, options) {
         options.sort((a, b) => a.localeCompare(b));
@@ -100,6 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateSelectOptions(subcategorySelect, getUniqueValues('subcategory'));
     updateSelectOptions(accountSelect, getUniqueValues('account'));
     updateCharts();
+    updateKPI();
 
     transactionForm.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -130,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateSelectOptions(subcategorySelect, getUniqueValues('subcategory'));
         updateSelectOptions(accountSelect, getUniqueValues('account'));
         updateCharts();
+        updateKPI();
 
         // Reset the form fields and hide the form
         transactionForm.reset();
@@ -189,6 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateSelectOptions(subcategorySelect, getUniqueValues('subcategory'));
         updateSelectOptions(accountSelect, getUniqueValues('account'));
         updateCharts();
+        updateKPI();
     }
 
     function addTransactionToTable(transaction) {
@@ -217,6 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const rowToDelete = transactionsTable.querySelector(`tr[data-id='${id}']`);
         rowToDelete.remove();
         updateCharts();
+        updateKPI();
     }
 
     function updateCharts() {
