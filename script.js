@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let monthlyIncomeExpenseChart, expenseByCategoryChart, netMarginChart;
 
     function updateSelectOptions(select, options) {
+        options.sort((a, b) => a.localeCompare(b));
         select.innerHTML = '';
         options.forEach(option => {
             const opt = document.createElement('option');
@@ -58,6 +59,17 @@ document.addEventListener('DOMContentLoaded', function() {
         newEntryInput.value = '';
         modal.style.display = 'none';
     });
+
+    function filterOptions(selectId) {
+        const select = document.getElementById(selectId);
+        const searchInput = select.previousElementSibling;
+        const filter = searchInput.value.toLowerCase();
+        const options = select.options;
+        for (let i = 0; i < options.length; i++) {
+            const text = options[i].textContent.toLowerCase();
+            options[i].style.display = text.includes(filter) ? '' : 'none';
+        }
+    }
 
     // Handle tab switching
     navButtons.forEach(button => {
