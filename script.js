@@ -333,12 +333,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     {
                         label: 'Income',
                         data: monthlyData.income,
-                        backgroundColor: '#4caf50'
+                        backgroundColor: '#3196E2',
+                        barPercentage: 0.5,
+                        categoryPercentage: 0.5
                     },
                     {
                         label: 'Expenses',
                         data: monthlyData.expenses,
-                        backgroundColor: '#f44336'
+                        backgroundColor: '#FFC05F',
+                        barPercentage: 0.5,
+                        categoryPercentage: 0.5
                     }
                 ]
             },
@@ -373,7 +377,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 datasets: [{
                     label: 'Expenses by Category',
                     data: expenseByCategoryData.data,
-                    backgroundColor: '#f44336'
+                    backgroundColor: '#FFC05F',
+                    barPercentage: 0.5,
+                    categoryPercentage: 0.5
                 }]
             },
             options: {
@@ -409,12 +415,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     {
                         label: 'Net Margin',
                         data: netMarginData.netMargin,
-                        backgroundColor: '#4caf50'
+                        backgroundColor: '#3196E2',
+                        barPercentage: 0.5,
+                        categoryPercentage: 0.5
                     },
                     {
                         label: 'Expenses',
                         data: netMarginData.expenses,
-                        backgroundColor: '#f44336'
+                        backgroundColor: '#FFC05F',
+                        barPercentage: 0.5,
+                        categoryPercentage: 0.5
                     }
                 ]
             },
