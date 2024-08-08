@@ -46,6 +46,33 @@
             margin-bottom: 20px;
         }
 
+        .kpi-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .kpi-box {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 23%;
+            text-align: center;
+        }
+
+        .kpi-box h3 {
+            margin: 0 0 10px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .kpi-box p {
+            margin: 0;
+            font-size: 24px;
+            color: #000;
+        }
+
         .tab {
             display: none;
         }
@@ -140,6 +167,24 @@
             <h1>Personal Finance Dashboard</h1>
         </header>
         <section id="dashboard" class="tab active">
+            <div class="kpi-container">
+                <div class="kpi-box">
+                    <h3>Income</h3>
+                    <p id="kpi-income">$0.00</p>
+                </div>
+                <div class="kpi-box">
+                    <h3>Expenses</h3>
+                    <p id="kpi-expenses">$0.00</p>
+                </div>
+                <div class="kpi-box">
+                    <h3>Net Income</h3>
+                    <p id="kpi-net-income">$0.00</p>
+                </div>
+                <div class="kpi-box">
+                    <h3>Net Margin</h3>
+                    <p id="kpi-net-margin">0%</p>
+                </div>
+            </div>
             <h2>Dashboard</h2>
             <div id="charts">
                 <canvas id="monthlyIncomeExpenseChart"></canvas>
