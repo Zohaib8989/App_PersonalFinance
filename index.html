@@ -6,58 +6,210 @@
     <title>Personal Finance App</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+        }
+
+        nav {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-button {
+            display: block;
+            padding: 10px 20px;
+            margin: 5px 0;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: left;
+            cursor: pointer;
+            text-decoration: none;
+            color: black;
+        }
+
+        .nav-button.active {
+            background-color: #ccc;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        header {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            display: none;
+        }
+
+        .tab.active {
+            display: block;
+        }
+
+        .tab-button {
+            cursor: pointer;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .tab-button.active {
+            background-color: #ccc;
+        }
+
+        .filter-container {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        .filter-container select {
+            padding: 5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .modal-content button.close {
+            background-color: #f44336;
+        }
+    </style>
 </head>
 <body>
-    <div id="app">
+    <nav>
+        <a class="nav-button active" data-tab="dashboard">Dashboard</a>
+        <a class="nav-button" data-tab="transactions">Transactions</a>
+    </nav>
+    <main>
         <header>
             <h1>Personal Finance Dashboard</h1>
         </header>
-        <main>
-            <section id="dashboard">
-                <h2>Dashboard</h2>
-                <div id="charts">
-                    <canvas id="monthlyIncomeExpenseChart"></canvas>
-                    <canvas id="expenseByCategoryChart"></canvas>
-                </div>
-            </section>
-            <section id="transactions">
-                <h2>Transactions</h2>
-                <form id="transaction-form">
-                    <select id="type" required>
-                        <option value="">Type</option>
-                        <option value="income">Income</option>
-                        <option value="expense">Expense</option>
+        <section id="dashboard" class="tab active">
+            <h2>Dashboard</h2>
+            <div id="charts">
+                <canvas id="monthlyIncomeExpenseChart"></canvas>
+                <canvas id="expenseByCategoryChart"></canvas>
+                <canvas id="netMarginChart"></canvas>
+            </div>
+        </section>
+        <section id="transactions" class="tab">
+            <h2>Transactions</h2>
+            <div class="filter-container">
+                <label for="accountFilter">Filter by Account:</label>
+                <select id="accountFilter">
+                    <option value="all">All</option>
+                </select>
+            </div>
+            <button id="newTransactionButton">New Transaction</button>
+            <form id="transaction-form" style="display: none;">
+                <select id="type" required>
+                    <option value="">Type</option>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+                <input type="date" id="date" required>
+                <div class="dropdown-container">
+                    <label for="payee">Select Payee</label>
+                    <select id="payee" required>
+                        <option value="new">Add New</option>
                     </select>
-                    <input type="date" id="date" required>
-                    <input type="text" id="payee" placeholder="Payee Name" required>
-                    <input type="text" id="category" placeholder="Category" required>
-                    <input type="text" id="subcategory" placeholder="Sub Category" required>
-                    <input type="number" id="amount" step="0.01" placeholder="Amount" required>
-                    <input type="text" id="account" placeholder="Account" required>
-                    <input type="text" id="description" placeholder="Description">
-                    <button type="submit">Add Transaction</button>
-                </form>
-                <input type="file" id="csvFileInput" accept=".csv">
-                <button id="uploadCsvButton">Upload CSV</button>
-                <table id="transactions-table">
-                    <thead>
-                        <tr>
-                            <th>Type</th>
-                            <th>Date</th>
-                            <th>Payee Name</th>
-                            <th>Category</th>
-                            <th>Sub Category</th>
-                            <th>Amount</th>
-                            <th>Account</th>
-                            <th>Description</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </section>
-        </main>
+                </div>
+                <div class="dropdown-container">
+                    <label for="category">Category</label>
+                    <select id="category" required>
+                        <option value="new">Add New</option>
+                    </select>
+                </div>
+                <div class="dropdown-container">
+                    <label for="subcategory">Sub Category</label>
+                    <select id="subcategory" required>
+                        <option value="new">Add New</option>
+                    </select>
+                </div>
+                <input type="number" id="amount" step="0.01" placeholder="Amount" required>
+                <div class="dropdown-container">
+                    <label for="account">Account</label>
+                    <select id="account" required>
+                        <option value="new">Add New</option>
+                    </select>
+                </div>
+                <input type="text" id="description" placeholder="Description">
+                <button type="submit">Add Transaction</button>
+            </form>
+            <input type="file" id="csvFileInput" accept=".csv">
+            <button id="uploadCsvButton">Upload CSV</button>
+            <table id="transactions-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Payee Name</th>
+                        <th>Category</th>
+                        <th>Sub Category</th>
+                        <th>Amount</th>
+                        <th>Account</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <label for="newEntry">New Entry</label>
+            <input type="text" id="newEntry">
+            <button id="addNewEntryButton">Add</button>
+            <button class="close" id="closeModalButton">Close</button>
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
