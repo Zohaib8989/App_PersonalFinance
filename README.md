@@ -2,7 +2,7 @@
 
 ## Introduction 👋
 
-Welcome to the Personal Finance App – your ultimate tool for managing personal finances effortlessly. This web application is designed to help you track your income and expenses, visualize your financial data through dynamic charts, and generate insightful reports, all within an intuitive interface. Whether you're budgeting for the month or analyzing your spending habits, this app provides everything you need to stay on top of your finances.
+Welcome to Financely – your ultimate tool for managing personal finances effortlessly. This web application is designed to help you track your income and expenses, visualize your financial data through dynamic charts, and generate insightful reports, all within an intuitive interface. Whether you're budgeting for the month or analyzing your spending habits, this app provides everything you need to stay on top of your finances.
 
 ## Problem Statement 🛠️
 
