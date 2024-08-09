@@ -1,4 +1,4 @@
-# Finca App
+# Financely
 
 ## Introduction 👋
 
