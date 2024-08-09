@@ -1,83 +1,256 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Arial', sans-serif;
     background-color: #f9f9f9;
     margin: 0;
     padding: 0;
-    color: #333;
+    color: #000000;
 }
 
 #app {
-    max-width: 900px;
-    margin: 40px auto;
+    max-width: 1200px;
+    margin: 20px auto;
     background-color: #fff;
     padding: 20px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
 
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f4f4f4;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.nav-button {
+    margin: 0 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #000000;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-button.active {
+    border-bottom: 2px solid #000000;
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+}
+
+.nav-icons .icon {
+    margin-left: 20px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 40px;
+    background-color: white;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.dropdown button {
+    display: block;
+    padding: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+}
+
+.dropdown button:hover {
+    background-color: #f4f4f4;
+}
+
+main {
+    padding: 20px;
+}
+
 header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-h1 {
-    font-size: 2em;
-    color: #007BFF;
-}
-
-h2 {
-    color: #666;
-    border-bottom: 2px solid #007BFF;
-    padding-bottom: 10px;
+    text-align: left;
     margin-bottom: 20px;
 }
 
-form {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-bottom: 30px;
+.kpi-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
-form select, form input, form button {
+.kpi-box {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 23%;
+    text-align: center;
+}
+
+.kpi-box h3 {
+    margin: 0 0 10px;
+    font-size: 20px;
+    color: #333;
+}
+
+.kpi-box p {
+    margin: 0;
+    font-size: 24px;
+    color: #000000;
+}
+
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+.filter-container {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.filter-container select {
+    padding: 5px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.modal-content input {
+    width: 100%;
     padding: 10px;
+    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 1em;
 }
 
-form button {
-    background-color: #007BFF;
-    color: #fff;
+.modal-content button {
+    padding: 10px 20px;
     border: none;
+    border-radius: 5px;
+    background-color: #4caf50;
+    color: #fff;
     cursor: pointer;
-    grid-column: span 2;
 }
 
-form button:hover {
-    background-color: #0056b3;
+.modal-content button.close {
+    background-color: #f44336;
 }
 
-table {
+.dropdown-container {
+    position: relative;
+}
+
+.dropdown-container .search-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.report-table th, .report-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+.report-table th {
+    background-color: #f4f4f4;
+}
+
+.report-total {
+    font-weight: bold;
+}
+
+.charts-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.chart-container {
+    width: 32%;
+}
+
+#transactions-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 30px;
 }
 
-table th, table td {
+#transactions-table th, #transactions-table td {
     padding: 15px;
     border: 1px solid #ddd;
     text-align: left;
 }
 
-table th {
+#transactions-table th {
     background-color: #f0f0f0;
 }
 
-table tr:nth-child(even) {
+#transactions-table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-#charts {
-    margin-bottom: 30px;
+#transactions-table {
+    width: 100%;
+}
+
+#gear-dropdown {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 5px;
 }
