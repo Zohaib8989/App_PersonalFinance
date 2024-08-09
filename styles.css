@@ -6,86 +6,53 @@ body {
     color: #000000;
 }
 
-#app {
-    max-width: 1200px;
-    margin: 20px auto;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-
-.top-nav {
+#top-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #fff;
     padding: 10px 20px;
-    background-color: #f4f4f4;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
 }
 
-.logo-container h1 {
-    margin: 0;
+#logo {
     font-size: 24px;
     font-weight: bold;
+    color: #129ACA;
 }
 
 .nav-links {
     display: flex;
-    justify-content: center;
-    flex-grow: 1;
+    gap: 20px;
 }
 
 .nav-button {
-    margin: 0 10px;
-    padding: 10px 15px;
     cursor: pointer;
-    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
     color: #000000;
-    border-bottom: 2px solid transparent;
+    text-decoration: none;
 }
 
 .nav-button.active {
-    border-bottom: 2px solid #000000;
+    background-color: #ccc;
 }
 
 .nav-icons {
     display: flex;
-    align-items: center;
-}
-
-.nav-icons .icon {
-    margin-left: 20px;
-    cursor: pointer;
-    font-size: 18px;
-}
-
-.dropdown {
-    display: none;
-    position: absolute;
-    top: 50px;
-    right: 40px;
-    background-color: white;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-}
-
-.dropdown button {
-    display: block;
-    padding: 10px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    text-align: left;
-    width: 100%;
-}
-
-.dropdown button:hover {
-    background-color: #f4f4f4;
+    gap: 15px;
 }
 
 main {
-    padding: 20px;
+    flex-grow: 1;
+    padding: 80px 20px 20px 20px; /* Adjust padding to accommodate fixed nav */
 }
 
 header {
@@ -111,7 +78,7 @@ header {
 .kpi-box h3 {
     margin: 0 0 10px;
     font-size: 20px;
-    color: #333;
+    color: #000000;
 }
 
 .kpi-box p {
@@ -233,24 +200,22 @@ header {
 
 #transactions-table th {
     background-color: #f0f0f0;
+    position: sticky;
+    top: 80px; /* Adjust to the height of the top-nav */
+    z-index: 100;
 }
 
 #transactions-table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-#transactions-table {
-    width: 100%;
-}
-
 #gear-dropdown {
     display: none;
     position: absolute;
-    top: 30px;
     right: 0;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
     border-radius: 5px;
-    padding: 5px;
+    z-index: 101;
 }
