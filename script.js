@@ -151,12 +151,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     content.classList.add('active');
                 }
             });
+
+            document.getElementById('page-title').textContent = button.textContent;
         });
     });
 
     // Show the form when the New Transaction button is clicked
     newTransactionButton.addEventListener('click', () => {
         transactionForm.style.display = 'block';
+    });
+
+    // Toggle gear dropdown visibility
+    const gearIcon = document.getElementById('gear-icon');
+    const gearDropdown = document.getElementById('gear-dropdown');
+
+    gearIcon.addEventListener('click', () => {
+        gearDropdown.style.display = gearDropdown.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Hide the dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!gearDropdown.contains(event.target) && event.target !== gearIcon) {
+            gearDropdown.style.display = 'none';
+        }
     });
 
     // Populate the table with existing transactions
@@ -218,6 +235,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     uploadCsvButton.addEventListener('click', () => {
+        csvFileInput.click();
+    });
+
+    csvFileInput.addEventListener('change', () => {
         const file = csvFileInput.files[0];
         if (file) {
             const reader = new FileReader();
@@ -333,14 +354,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     {
                         label: 'Income',
                         data: monthlyData.income,
-                        backgroundColor: '#3196E2',
+                        backgroundColor: '#129ACA',
                         barPercentage: 0.5,
                         categoryPercentage: 0.5
                     },
                     {
                         label: 'Expenses',
                         data: monthlyData.expenses,
-                        backgroundColor: '#FFC05F',
+                        backgroundColor: '#FF6D6D',
                         barPercentage: 0.5,
                         categoryPercentage: 0.5
                     }
@@ -377,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 datasets: [{
                     label: 'Expenses by Category',
                     data: expenseByCategoryData.data,
-                    backgroundColor: '#FFC05F',
+                    backgroundColor: '#FF6D6D',
                     barPercentage: 0.5,
                     categoryPercentage: 0.5
                 }]
@@ -415,14 +436,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     {
                         label: 'Net Margin',
                         data: netMarginData.netMargin,
-                        backgroundColor: '#3196E2',
+                        backgroundColor: '#129ACA',
                         barPercentage: 0.5,
                         categoryPercentage: 0.5
                     },
                     {
                         label: 'Expenses',
                         data: netMarginData.expenses,
-                        backgroundColor: '#FFC05F',
+                        backgroundColor: '#FF6D6D',
                         barPercentage: 0.5,
                         categoryPercentage: 0.5
                     }
