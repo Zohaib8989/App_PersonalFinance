@@ -37,3 +37,15 @@ The design of the Personal Finance App is focused on simplicity and user experie
 **Responsive Layout:** Optimized for both desktop and mobile devices.
 **Intuitive Navigation:** Easy-to-use tabs and menus for seamless user experience.
 **Clean Aesthetics:** A minimalistic design with a focus on clarity and usability, ensuring that users can interact with the app effortlessly.
+
+## Future Improvements 🚀
+
+As we continue to enhance the Personal Finance Web App, several exciting features are planned for future updates:
+
+Connecting to Bank Transactions via Plaid: This will allow users to automatically import their bank transactions, providing seamless integration with their financial data.
+Multi-Currency Support: Users will be able to manage finances across multiple currencies, making the app ideal for those with international transactions.
+Tracking Assets, Liabilities, and Net Worth Over Time: This feature will offer a comprehensive view of users' financial health by tracking their net worth over time.
+
+### Link to the App
+
+Stay tuned for these updates! In the meantime, check out the app here: [Personal Finance Web App](https://zohaib8989.github.io/SAAS_PersonalFinance/).
