@@ -15,15 +15,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const newEntryInput = document.getElementById('newEntry');
     const addNewEntryButton = document.getElementById('addNewEntryButton');
     const closeModalButton = document.getElementById('closeModalButton');
+    const gearIcon = document.getElementById('gear-icon');
+    const gearDropdown = document.getElementById('gear-dropdown');
     const kpiIncome = document.getElementById('kpi-income');
     const kpiExpenses = document.getElementById('kpi-expenses');
     const kpiNetIncome = document.getElementById('kpi-net-income');
     const kpiNetMargin = document.getElementById('kpi-net-margin');
     const reportBody = document.getElementById('report-body');
+    const profileIcon = document.createElement('span');
 
     let currentSelect = null;
     let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
     let monthlyIncomeExpenseChart, expenseByCategoryChart, netMarginChart;
+
+    profileIcon.id = 'profile-icon';
+    profileIcon.textContent = '👤';
+    gearIcon.parentNode.insertBefore(profileIcon, gearIcon.nextSibling);
 
     function updateKPI() {
         const income = transactions
@@ -163,10 +170,22 @@ document.addEventListener('DOMContentLoaded', function() {
         transactionForm.style.display = 'block';
     });
 
-    // Handle gear icon dropdown
-    document.getElementById('gear-icon').addEventListener('click', () => {
-        const dropdown = document.getElementById('gear-dropdown');
-        dropdown.style.display = dropdown.style.display === 'none' || !dropdown.style.display ? 'block' : 'none';
+    // Handle gear icon dropdown with close functionality
+    gearIcon.addEventListener('click', (event) => {
+        event.stopPropagation();
+        gearDropdown.style.display = gearDropdown.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+        if (!gearDropdown.contains(event.target) && event.target !== gearIcon) {
+            gearDropdown.style.display = 'none';
+        }
+    });
+
+    // Prevent dropdown from closing when clicking inside the dropdown
+    gearDropdown.addEventListener('click', (event) => {
+        event.stopPropagation();
     });
 
     // Populate the table with existing transactions
