@@ -152,7 +152,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            document.getElementById('page-title').textContent = button.textContent;
+            // Update the page title on each tab switch
+            const pageTitle = document.getElementById('page-title');
+            pageTitle.textContent = tabId.charAt(0).toUpperCase() + tabId.slice(1);
         });
     });
 
@@ -161,19 +163,10 @@ document.addEventListener('DOMContentLoaded', function() {
         transactionForm.style.display = 'block';
     });
 
-    // Toggle gear dropdown visibility
-    const gearIcon = document.getElementById('gear-icon');
-    const gearDropdown = document.getElementById('gear-dropdown');
-
-    gearIcon.addEventListener('click', () => {
-        gearDropdown.style.display = gearDropdown.style.display === 'block' ? 'none' : 'block';
-    });
-
-    // Hide the dropdown when clicking outside
-    document.addEventListener('click', function(event) {
-        if (!gearDropdown.contains(event.target) && event.target !== gearIcon) {
-            gearDropdown.style.display = 'none';
-        }
+    // Handle gear icon dropdown
+    document.getElementById('gear-icon').addEventListener('click', () => {
+        const dropdown = document.getElementById('gear-dropdown');
+        dropdown.style.display = dropdown.style.display === 'none' || !dropdown.style.display ? 'block' : 'none';
     });
 
     // Populate the table with existing transactions
@@ -372,13 +365,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 scales: {
                     x: {
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Month'
                         }
                     },
                     y: {
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Amount'
                         },
                         beginAtZero: true
@@ -409,14 +402,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 scales: {
                     x: {
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Amount'
                         },
                         beginAtZero: true
                     },
                     y: {
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Category'
                         }
                     }
@@ -454,13 +447,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 scales: {
                     x: {
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Month'
                         }
                     },
                     y: {
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Percentage'
                         },
                         beginAtZero: true
