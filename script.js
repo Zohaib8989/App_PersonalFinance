@@ -183,20 +183,22 @@ document.addEventListener('DOMContentLoaded', function() {
     transactionForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
+        // Retrieving the actual values from the input fields
         const type = document.getElementById('type').value;
         const date = document.getElementById('date').value;
-        const payee = document.getElementById('payee').value;
-        const category = document.getElementById('category').value;
-        const subcategory = document.getElementById('subcategory').value;
+        const payee = payeeSelect.value !== 'new' ? payeeSelect.value : newEntryInput.value;
+        const category = categorySelect.value !== 'new' ? categorySelect.value : newEntryInput.value;
+        const subcategory = subcategorySelect.value !== 'new' ? subcategorySelect.value : newEntryInput.value;
         const amount = parseFloat(document.getElementById('amount').value);
-        const account = document.getElementById('account').value;
-        const description = document.getElementById('description').value;
+        const account = accountSelect.value !== 'new' ? accountSelect.value : newEntryInput.value;
+        const description = document.getElementById('description').value || "-";
 
         if (!type || !date || !payee || !category || !subcategory || isNaN(amount) || !account) {
             console.error('One or more fields are empty or invalid.');
             return;
         }
 
+        // Creating the transaction object with the correct values
         const transaction = { id: Date.now(), type, date, payee, category, subcategory, amount, account, description };
 
         transactions.push(transaction);
