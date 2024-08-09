@@ -48,4 +48,5 @@ As we continue to enhance the Personal Finance Web App, several exciting feature
 
 ## Link to the App
 
-Stay tuned for these updates! In the meantime, check out the app here: [[Personal Finance Web App](https://zohaib8989.github.io/SAAS_PersonalFinance/)](https://zohaib8989.github.io/SAAS_Financely/).
+Stay tuned for these updates! In the meantime, check out the app here: https://zohaib8989.github.io/SAAS_Financely/.
+
