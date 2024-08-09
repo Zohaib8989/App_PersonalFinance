@@ -8,30 +8,27 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <nav class="top-nav">
-        <div class="logo-container">
-            <h1>Finca</h1>
-        </div>
+    <nav id="top-nav">
+        <div id="logo">Finca</div>
         <div class="nav-links">
             <a class="nav-button active" data-tab="overview">Overview</a>
             <a class="nav-button" data-tab="transactions">Transactions</a>
             <a class="nav-button" data-tab="reports">Reports</a>
         </div>
         <div class="nav-icons">
-            <span class="icon" id="notification-icon">🔔</span>
-            <span class="icon" id="gear-icon">⚙️</span>
-            <div class="dropdown" id="gear-dropdown">
-                <button id="uploadCsvButton">Import Transactions</button>
-            </div>
-            <span class="icon" id="profile-icon">👤</span>
+            <span id="notification-icon">🔔</span>
+            <span id="gear-icon">⚙️</span>
+            <span id="profile-icon">👤</span>
+        </div>
+        <div id="gear-dropdown">
+            <button id="uploadCsvButton">Import Transactions</button>
+            <input type="file" id="csvFileInput" accept=".csv" style="display:none;">
         </div>
     </nav>
-
     <main>
         <header>
-            <h2 id="page-title">Overview</h2>
+            <h1 id="page-title">Overview</h1>
         </header>
-
         <section id="overview" class="tab active">
             <div class="kpi-container">
                 <div class="kpi-box">
@@ -51,7 +48,6 @@
                     <p id="kpi-net-margin">0%</p>
                 </div>
             </div>
-            <h2>Dashboard</h2>
             <div class="charts-row">
                 <div class="chart-container">
                     <canvas id="monthlyIncomeExpenseChart"></canvas>
@@ -64,9 +60,8 @@
                 </div>
             </div>
         </section>
-
         <section id="transactions" class="tab">
-            <h2>Transactions</h2>
+            <h1 id="page-title">Transactions</h1>
             <div class="filter-container">
                 <label for="accountFilter">Filter by Account:</label>
                 <select id="accountFilter">
@@ -113,7 +108,6 @@
                 <input type="text" id="description" placeholder="Description">
                 <button type="submit">Add Transaction</button>
             </form>
-            <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
             <table id="transactions-table">
                 <thead>
                     <tr>
@@ -131,9 +125,7 @@
                 <tbody></tbody>
             </table>
         </section>
-
         <section id="reports" class="tab">
-            <h2>Profit and Loss Report</h2>
             <table class="report-table">
                 <thead>
                     <tr>
